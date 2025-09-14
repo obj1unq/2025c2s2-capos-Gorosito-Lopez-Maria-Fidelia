@@ -1,0 +1,30 @@
+import capos.*
+describe "testCapos"{
+    test "caso inicial"{
+        rolando.encuentra(espada)
+        rolando.encuentra(libro)
+        rolando.encuentra(collar)
+        assert.equals([libro, espada], rolando.getArtefactos())
+    }
+    test "ahora rolando deja las cosas en casa"{
+        rolando.encuentra(espada)
+        rolando.encuentra(libro)
+        rolando.dejarCosasEnCasa()
+        rolando.encuentra(collar)
+        rolando.dejarCosasEnCasa()
+        assert.equals([collar,espada, libro], casaDeRolando.getArtefactos())
+    }
+    test "Lo tenes?"{
+        rolando.posesiones()
+        rolando.tenes(libro) polimorfico
+        assert.that(rolando.tenes(libro))
+    }
+    test "historial de artefactos"{
+        rolando.encuentra(espada)
+        rolando.encuentra(libro)
+        rolando.encuentra(collar)
+        rolando.encuentra(armadura)
+        rolando.encuentra(collar)
+        assert.that(rolando.encuentros() == [espada, libro, collar, armadura, collar])
+    }
+}
