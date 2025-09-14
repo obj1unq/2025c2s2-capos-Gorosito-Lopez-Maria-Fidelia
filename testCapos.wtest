@@ -4,7 +4,7 @@ describe "testCapos"{
         rolando.encuentra(espada)
         rolando.encuentra(libro)
         rolando.encuentra(collar)
-        assert.equals([libro, espada], rolando.getArtefactos())
+        assert.equals(#{libro, espada}, rolando.getArtefactosDeRolando())
     }
     test "ahora rolando deja las cosas en casa"{
         rolando.encuentra(espada)
@@ -12,11 +12,10 @@ describe "testCapos"{
         rolando.dejarCosasEnCasa()
         rolando.encuentra(collar)
         rolando.dejarCosasEnCasa()
-        assert.equals([collar,espada, libro], casaDeRolando.getArtefactos())
+        assert.equals(#{collar,espada, libro}, casaDeRolando.getArtefactos())
     }
     test "Lo tenes?"{
-        rolando.posesiones()
-        rolando.tenes(libro) polimorfico
+        rolando.encuentra(libro)
         assert.that(rolando.tenes(libro))
     }
     test "historial de artefactos"{
@@ -25,6 +24,6 @@ describe "testCapos"{
         rolando.encuentra(collar)
         rolando.encuentra(armadura)
         rolando.encuentra(collar)
-        assert.that(rolando.encuentros() == [espada, libro, collar, armadura, collar])
+        assert.that(rolando.historialDeArtefactos() == [espada, libro, collar, armadura, collar])
     }
 }
