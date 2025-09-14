@@ -1,76 +1,87 @@
 object rolando {
- var espacio = 2
- var artefactos = #{}
- var historialDeArtefactos = []
-
- //agrega artefactos a la "mochila"
- method encuentra(elemento){
-    if (espacio >= 1) {
-        self.decrementarEnUnoElEspacio(espacio)
-        artefactos.add(elemento)
-        self.actualizarHistorialDeArtefactos(elemento)
-    }else 
+  var historialDeArtefactos = []
+  
+  //agrega artefactos a la "mochila"
+  method encuentra(elemento) {
+    if (mochilaDeRolando.getEspacio() >= 1) {
+      mochilaDeRolando.guardar(elemento)
       self.actualizarHistorialDeArtefactos(elemento)
- }
- 
-//Getter historial de artefactos
-method historialDeArtefactos(){
-   return historialDeArtefactos
+    } else {
+      self.actualizarHistorialDeArtefactos(elemento)
+    }
+  }
+  
+  //Getter historial de artefactos
+  method getHistorialDeArtefactos() = historialDeArtefactos
+  
+  //Setter de los artefactos en orden encontrados
+  method actualizarHistorialDeArtefactos(elemento) {
+    historialDeArtefactos.add(elemento)
+  }
+  
+  //deja los artefactos que tiene en la mochila en la casa
+  method dejarCosasEnCasa() {
+    casaDeRolando.addArtefactos(self.getArtefactosDeRolando())
+    mochilaDeRolando.setArtefactosPostCasa()
+  }
+  
+  //getter de artefactos
+  method getArtefactosDeRolando() = mochilaDeRolando.getArtefactos()
+  
+  //Posesiones de rolando 
+  method posesiones() = casaDeRolando.getArtefactos() + self.getArtefactosDeRolando()
+  
+  // Booleano True si rolando tiene el "algo" dado entre sus posesiones
+  method tenes(algo) = self.posesiones().contains(algo)
 }
 
- //Setter de los artefactos en orden encontrados
- method actualizarHistorialDeArtefactos(elemento){
-   historialDeArtefactos.add(elemento)
- }
-
- // decrementar en uno la variable espacio
- method decrementarEnUnoElEspacio(_espacio){
-    espacio = _espacio -1
- }
-
- // Vuelve el valor del espacio a 2
- method reestablecerCantidadDeEspacio(){
-   espacio = 2
- }
-
- //deja los artefactos que tiene en la mochila en la casa
- method dejarCosasEnCasa(){
-    casaDeRolando.addArtefactos(self.getArtefactosDeRolando())
-    self.setArtefactosPostCasa()
- }
-
- //getter de artefactos
- method getArtefactosDeRolando(){
-    return artefactos
- }
-
- // Artefactos post dejarlos en la casa
- method setArtefactosPostCasa(){
+object mochilaDeRolando {
+  var artefactos = #{}
+  var espacio = 0
+  
+  //guarda elemento
+  method guardar(elemento) {
+    artefactos += #{elemento}
+    self.decrementarEnUnoElEspacio()
+  }
+  
+  //Getter del espacio
+  method getEspacio() = espacio
+  
+  // decrementar en uno la variable espacio
+  method decrementarEnUnoElEspacio() {
+    espacio -= 1
+  }
+  
+  //Getter artefactos
+  method getArtefactos() = artefactos
+  
+  // Artefactos post dejarlos en la casa
+  method setArtefactosPostCasa() {
     artefactos = #{}
     self.reestablecerCantidadDeEspacio()
- }
-
- //Posesiones de rolando 
- method posesiones(){
-    return casaDeRolando.getArtefactos() + self.getArtefactosDeRolando()
- }
-
-// Booleano True si rolando tiene el "algo" dado entre sus posesiones
- method tenes(algo){
-   return self.posesiones().contains(algo)
- }
- //intente usar posesiones como objeto rari, ojo
+  }
+  
+  // Vuelve el valor del espacio a 2
+  method reestablecerCantidadDeEspacio() {
+    espacio = 2
+  }
+  
+  //Settea un nuevo valor para espacio
+  method cantidadDeEspacio(cantidad) {
+    espacio = cantidad
+  }
 }
 
-object casaDeRolando{
-    var artefactos = #{}
-    //getter de artefactos
-    method getArtefactos(){
-        return artefactos
-    }
-    method addArtefactos(artefactosDeRolando){
-        artefactos = rolando.getArtefactosDeRolando() + artefactos
-    }
+object casaDeRolando {
+  var artefactos = #{}
+  
+  //getter de artefactos
+  method getArtefactos() = artefactos
+  
+  method addArtefactos(_artefactos) {
+    artefactos = _artefactos + artefactos
+  }
 }
 
 object espada {
