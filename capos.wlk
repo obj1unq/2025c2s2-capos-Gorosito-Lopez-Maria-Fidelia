@@ -1,6 +1,18 @@
 object rolando {
   var historialDeArtefactos = []
   
+  var valorBase = 0
+
+  //Setter del valor base de rolando
+  method setValorBase(_valor){
+    valorBase = _valor
+  }
+
+  //Getter del valor base de rolando
+  method getValorBase(){
+    return valorBase
+  }
+
   //agrega artefactos a la "mochila"
   method encuentra(elemento) {
     if (mochilaDeRolando.getEspacio() >= 1) {
