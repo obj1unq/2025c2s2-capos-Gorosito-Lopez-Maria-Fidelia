@@ -31,10 +31,11 @@ describe "testCapos"{
         assert.that(rolando.getHistorialDeArtefactos() == [espada, libro, collar, armadura, collar])
     }
     test "espada" {
-    espada.usar(rolando)
-    assert.equals(rolando.valorBase, (rolando.valorBase * 2))
-    espada.usar(rolando)
-    assert.equals(rolando.valorBase, (rolando.valorBase * 0.5))
+    mochila.cantidadDeEspacio(3)
+    rolando.setValorBase(5)
+    rolando.encuentra(espada)
+    assert.equals(10, rolando.batalla())
+
     }
     test "Primera batalla de rolando"{
         rolando.setValorBase(5)
