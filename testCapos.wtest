@@ -5,7 +5,7 @@ describe "testCapos"{
         rolando.encuentra(espada)
         rolando.encuentra(libro)
         rolando.encuentra(collar)
-        assert.equals(#{libro, espada}, rolando.getArtefactosDeRolando())
+        assert.equals(#{libro, espada}, mochila.getArtefactos())
     }
     test "ahora rolando deja las cosas en casa"{
         mochila.cantidadDeEspacio(2)
@@ -29,5 +29,19 @@ describe "testCapos"{
         rolando.encuentra(armadura)
         rolando.encuentra(collar)
         assert.that(rolando.getHistorialDeArtefactos() == [espada, libro, collar, armadura, collar])
+    }
+    test "espada" {
+    espada.usar(rolando)
+    assert.equals(rolando.valorBase, (rolando.valorBase * 2))
+    espada.usar(rolando)
+    assert.equals(rolando.valorBase, (rolando.valorBase * 0.5))
+    }
+    test "Primera batalla de rolando"{
+        rolando.setValorBase(5)
+        mochila.cantidadDeEspacio(3)
+        rolando.encuentra(espada)
+        rolando.encuentra(armadura)
+        rolando.encuentra(collar)
+        assert.equals(19, rolando.batalla())
     }
 }

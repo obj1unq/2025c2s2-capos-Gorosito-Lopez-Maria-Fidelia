@@ -4,6 +4,12 @@ object rolando {
   var casaDeRolando = castilloDePiedra
   var valorBase = 0
 
+  //Rolando va a la batalla
+  method batalla(){
+    return valorBase + mochila.poderDePelea()
+    // self.poderDePelea()
+  }
+
   //Setter del valor base de rolando
   method setValorBase(_valor){
     valorBase = _valor
@@ -34,15 +40,12 @@ object rolando {
   
   //deja los artefactos que tiene en la mochila en la casa
   method dejarCosasEnCasa() {
-    casaDeRolando.addArtefactos(self.getArtefactosDeRolando()) //tiene variable global
+    casaDeRolando.addArtefactos(mochila.getArtefactos()) //tiene variable global
     mochila.setArtefactosPostCasa() //tiene variable global
   }
   
-  //getter de artefactos
-  method getArtefactosDeRolando() = mochila.getArtefactos()
-  
   //Posesiones de rolando 
-  method posesiones() = casaDeRolando.getArtefactos() + self.getArtefactosDeRolando()
+  method posesiones() = casaDeRolando.getArtefactos() + mochila.getArtefactos()
   
   // Booleano True si rolando tiene el "algo" dado entre sus posesiones
   method tenes(algo) = self.posesiones().contains(algo)
@@ -63,6 +66,11 @@ object mochila {
   var artefactos = #{}
   var espacio = 0
   
+  method poderDePelea(){
+    return artefactos.sum({artefactos => artefactos.poder()})
+  }
+  // se necesita declarar primero quien es el pj
+
   //guarda elemento
   method guardar(elemento) {
     artefactos += #{elemento}
@@ -95,8 +103,10 @@ object mochila {
   method cantidadDeEspacio(cantidad) {
     espacio = cantidad
   }
+  
 }
 
+//////////CASTILLO DE PIEDRA//////////////
 object castilloDePiedra {
   var artefactos = #{}
   
@@ -108,44 +118,60 @@ object castilloDePiedra {
   }
 }
 
+//////////ESPADA//////////
 object espada {
+  var poder = 0
   var usosDeLaEspada = 0
   method usar(personaje){
     if (usosDeLaEspada == 0){
-      personaje.getValorBase() * 2
+      poder = personaje.getValorBase()
       usosDeLaEspada =+ 1
     }else{
-      personaje.getValorBase() * 0.5
+      poder = personaje.getValorBase() * 0.5
       usosDeLaEspada =+ 1
     }
   }
-
+  //Get poder
+  method poder(){
+    return poder
+  }
 }
 
+//////////LIBRO/////////////
 object libro {
   
 }
 
+//////////COLLAR//////////
 object collar {
   var batallasEnLasQueSeUso = 0
   const poderDePelea = 3
+  var poder = 0
   method usar(personaje){
     if (personaje.getValorBase() > 6) {
-      personaje.getValorBase() + poderDePelea + batallasEnLasQueSeUso
+      poder = personaje.getValorBase() + poderDePelea + batallasEnLasQueSeUso
       batallasEnLasQueSeUso =+ 1
     }else 
-    personaje.getValorBase() + poderDePelea
+    poder = personaje.getValorBase() + poderDePelea
     batallasEnLasQueSeUso =+ 1
+  }
+  //Get poder
+  method poder(){
+    return poder
   }
 }
 
+//////////ARMADURA///////////
 object armadura {
   const poderDePelea = 6
+  var poder = 0
   method usar(personaje){
-    personaje.getValorBase() + poderDePelea
+   poder = personaje.getValorBase() + poderDePelea
   }
-
-  
+  //Get poder
+  method poder(){
+    return poder
+  }
 }
 
 /*
