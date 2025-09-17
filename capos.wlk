@@ -10,18 +10,18 @@ object rolando {
   }
 
   //Setter del valor base de rolando
-  method setValorBase(_valor){
+  method valorBase(_valor){
     valorBase = _valor
   }
 
-  //Getter del valor base de rolando
-  method getValorBase(){
+  //Getter del valor base
+  method valorBase(){
     return valorBase
   }
 
   //agrega artefactos a la "mochila"
   method encuentra(elemento) {
-    if (mochila.getEspacio() >= 1) {
+    if (mochila.espacio() >= 1) {
       mochila.guardar(elemento)
       self.actualizarHistorialDeArtefactos(elemento)
     } else {
@@ -30,7 +30,7 @@ object rolando {
   }
   
   //Getter historial de artefactos
-  method getHistorialDeArtefactos() = historialDeArtefactos
+  method historialDeArtefactos() = historialDeArtefactos
   
   //Setter de los artefactos en orden encontrados
   method actualizarHistorialDeArtefactos(elemento) {
@@ -39,12 +39,12 @@ object rolando {
   
   //deja los artefactos que tiene en la mochila en la casa
   method dejarCosasEnCasa() {
-    casaDeRolando.addArtefactos(mochila.getArtefactos()) 
-    mochila.setArtefactosPostCasa() 
+    casaDeRolando.addArtefactos(mochila.artefactos()) 
+    mochila.artefactosPostCasa() 
   }
   
   //Posesiones de rolando 
-  method posesiones() = casaDeRolando.getArtefactos() + mochila.getArtefactos()
+  method posesiones() = casaDeRolando.artefactos() + mochila.artefactos()
   
   // Booleano True si rolando tiene el "algo" dado entre sus posesiones
   method tenes(algo) = self.posesiones().contains(algo)
@@ -53,57 +53,45 @@ object rolando {
   method setMochila(_mochila) {
     mochilaDeRolando = _mochila
   }
-
   //Setter del hogar de rolando
   method setCasaDeRolando(_hogar){
     casaDeRolando = _hogar
   }
-  method valorBase(){
-    return valorBase
-  }
+ 
 }
 
 ////MOCHILA DE ROLANDO ////
 object mochila {
   var artefactos = #{}
-  var espacio = 0
+  var espacio = 0 // se trabaja con esta variable para poder saber cuanto espacio le queda
+  var capacidad = 0 //Se setea un valor y se mantiene 
   
   method poderDePelea(personaje){
     return artefactos.sum({artefacto => artefacto.poder(personaje)})
   }
-  // se necesita declarar primero quien es el pj
 
   //guarda elemento
   method guardar(elemento) {
-    artefactos += #{elemento}
-    self.decrementarEnUnoElEspacio()
-  }
-  
-  //Getter del espacio
-  method getEspacio() = espacio
-  
-  // decrementar en uno la variable espacio
-  method decrementarEnUnoElEspacio() {
+    artefactos.add(elemento)
     espacio -= 1
   }
   
+  //Getter del espacio
+  method espacio() = espacio
+  
   //Getter artefactos
-  method getArtefactos() = artefactos
+  method artefactos() = artefactos
   
   // Artefactos post dejarlos en la casa
-  method setArtefactosPostCasa() {
+  method artefactosPostCasa() {
     artefactos = #{}
-    self.reestablecerCantidadDeEspacio()
-  }
-  
-  // Vuelve el valor del espacio a 2
-  method reestablecerCantidadDeEspacio() {
-    espacio = 2
+    espacio = capacidad
   }
   
   //Settea un nuevo valor para espacio
-  method cantidadDeEspacio(cantidad) {
-    espacio = cantidad
+  method cantidadDeEspacio(_cantidad) {
+    espacio = _cantidad
+    capacidad = _cantidad
   }
   
 }
@@ -113,7 +101,7 @@ object castilloDePiedra {
   var artefactos = #{}
   
   //getter de artefactos
-  method getArtefactos() = artefactos
+  method artefactos() = artefactos
   
   method addArtefactos(_artefactos) {
     artefactos = _artefactos + artefactos
@@ -122,18 +110,19 @@ object castilloDePiedra {
 
 //////////ESPADA//////////
 object espada {
-  var usosDeLaEspada = 0
+  var usos = 0
+
   method usar(){
-    usosDeLaEspada =+ 1
+    usos += 1
   }
   //Get poder
   method poder(personaje){
-    if (usosDeLaEspada == 0){
-      return personaje.getValorBase()
-      
+    if (usos == 0){
+      return personaje.valorBase()
     }else{
-      return personaje.getValorBase() * 0.5
+      return personaje.valorBase() * 0.5
     }
+    self.usar()
   }
 }
 
@@ -144,18 +133,20 @@ object libro {
 
 //////////COLLAR//////////
 object collar {
-  var batallasEnLasQueSeUso = 0
+  var usos = 0
   const poderDePelea = 3
   method usar(){
-    batallasEnLasQueSeUso = batallasEnLasQueSeUso +1
+    usos += 1
   }
   //Get poder
   method poder(personaje){
-    if (personaje.getValorBase() > 6) {
-    return personaje.getValorBase() + poderDePelea + batallasEnLasQueSeUso
-    }else 
-    return personaje.getValorBase() + poderDePelea
+    self.usar()
+    if (personaje.valorBase() > 6) {
+    return poderDePelea + usos
+    }else {return poderDePelea}
+
   }
+
 }
 
 //////////ARMADURA///////////
@@ -164,7 +155,7 @@ object armadura {
 
   //Get poder
   method poder(personaje){
-    return personaje.getValorBase() + poderDePelea
+    return poderDePelea
   }
 }
 
@@ -176,3 +167,5 @@ Podriamos en vez de tener variables globales, plantear setters y getters para de
 
 
 // el method usar tiene que ser polimorfico
+
+//Pensar que tiene que ser si una consulta o una orden 
