@@ -1,28 +1,28 @@
 import capos.*
 describe "testCapos"{
     test "caso inicial"{
-        mochilaDeRolando.cantidadDeEspacio(2)
+        mochila.cantidadDeEspacio(2)
         rolando.encuentra(espada)
         rolando.encuentra(libro)
         rolando.encuentra(collar)
         assert.equals(#{libro, espada}, rolando.getArtefactosDeRolando())
     }
     test "ahora rolando deja las cosas en casa"{
-        mochilaDeRolando.cantidadDeEspacio(2)
+        mochila.cantidadDeEspacio(2)
         rolando.encuentra(espada)
         rolando.encuentra(libro)
         rolando.dejarCosasEnCasa()
         rolando.encuentra(collar)
         rolando.dejarCosasEnCasa()
-        assert.equals(#{collar,espada, libro}, casaDeRolando.getArtefactos())
+        assert.equals(#{collar,espada, libro}, castilloDePiedra.getArtefactos())
     }
     test "Lo tenes?"{
-        mochilaDeRolando.cantidadDeEspacio(2)
+        mochila.cantidadDeEspacio(2)
         rolando.encuentra(libro)
         assert.that(rolando.tenes(libro))
     }
     test "historial de artefactos"{
-        mochilaDeRolando.cantidadDeEspacio(2)
+        mochila.cantidadDeEspacio(2)
         rolando.encuentra(espada)
         rolando.encuentra(libro)
         rolando.encuentra(collar)

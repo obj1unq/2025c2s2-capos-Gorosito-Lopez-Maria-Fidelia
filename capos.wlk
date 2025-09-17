@@ -1,6 +1,7 @@
 object rolando {
   var historialDeArtefactos = []
-  
+  var mochilaDeRolando = mochila
+  var casaDeRolando = castilloDePiedra
   var valorBase = 0
 
   //Setter del valor base de rolando
@@ -15,8 +16,8 @@ object rolando {
 
   //agrega artefactos a la "mochila"
   method encuentra(elemento) {
-    if (mochilaDeRolando.getEspacio() >= 1) {
-      mochilaDeRolando.guardar(elemento)
+    if (mochila.getEspacio() >= 1) {
+      mochila.guardar(elemento)
       self.actualizarHistorialDeArtefactos(elemento)
     } else {
       self.actualizarHistorialDeArtefactos(elemento)
@@ -28,26 +29,37 @@ object rolando {
   
   //Setter de los artefactos en orden encontrados
   method actualizarHistorialDeArtefactos(elemento) {
-    historialDeArtefactos.add(elemento)
+    historialDeArtefactos.add(elemento) //tiene variable global
   }
   
   //deja los artefactos que tiene en la mochila en la casa
   method dejarCosasEnCasa() {
-    casaDeRolando.addArtefactos(self.getArtefactosDeRolando())
-    mochilaDeRolando.setArtefactosPostCasa()
+    casaDeRolando.addArtefactos(self.getArtefactosDeRolando()) //tiene variable global
+    mochila.setArtefactosPostCasa() //tiene variable global
   }
   
   //getter de artefactos
-  method getArtefactosDeRolando() = mochilaDeRolando.getArtefactos()
+  method getArtefactosDeRolando() = mochila.getArtefactos()
   
   //Posesiones de rolando 
   method posesiones() = casaDeRolando.getArtefactos() + self.getArtefactosDeRolando()
   
   // Booleano True si rolando tiene el "algo" dado entre sus posesiones
   method tenes(algo) = self.posesiones().contains(algo)
+
+  //Setter de la mochila de rolando
+  method setMochila(_mochila) {
+    mochilaDeRolando = _mochila
+  }
+
+  //Setter del hogar de rolando
+  method setCasaDeRolando(_hogar){
+    casaDeRolando = _hogar
+  }
 }
 
-object mochilaDeRolando {
+////MOCHILA DE ROLANDO ////
+object mochila {
   var artefactos = #{}
   var espacio = 0
   
@@ -85,7 +97,7 @@ object mochilaDeRolando {
   }
 }
 
-object casaDeRolando {
+object castilloDePiedra {
   var artefactos = #{}
   
   //getter de artefactos
@@ -97,7 +109,17 @@ object casaDeRolando {
 }
 
 object espada {
-  
+  var usosDeLaEspada = 0
+  method usar(personaje){
+    if (usosDeLaEspada == 0){
+      personaje.getValorBase() * 2
+      usosDeLaEspada =+ 1
+    }else{
+      personaje.getValorBase() * 0.5
+      usosDeLaEspada =+ 1
+    }
+  }
+
 }
 
 object libro {
@@ -105,9 +127,30 @@ object libro {
 }
 
 object collar {
-  
+  var batallasEnLasQueSeUso = 0
+  const poderDePelea = 3
+  method usar(personaje){
+    if (personaje.getValorBase() > 6) {
+      personaje.getValorBase() + poderDePelea + batallasEnLasQueSeUso
+      batallasEnLasQueSeUso =+ 1
+    }else 
+    personaje.getValorBase() + poderDePelea
+    batallasEnLasQueSeUso =+ 1
+  }
 }
 
 object armadura {
+  const poderDePelea = 6
+  method usar(personaje){
+    personaje.getValorBase() + poderDePelea
+  }
+
   
 }
+
+/*
+Podriamos en vez de tener variables globales, plantear setters y getters para determinar variables para poder pasarle que "casa" tiene por ejemplo 
+*/
+
+
+
