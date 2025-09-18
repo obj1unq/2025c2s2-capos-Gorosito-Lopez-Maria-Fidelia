@@ -59,4 +59,21 @@ describe "testCapos"{
         rolando.encuentra(collar)
         assert.equals(19, rolando.batalla())
     }
+
+    test "libro de hechizos"{
+        rolando.valorBase(5)
+        mochila.cantidadDeEspacio(3)
+        rolando.encuentra(espada)
+        rolando.encuentra(collar)
+        rolando.encuentra(armadura)
+        rolando.dejarCosasEnCasa()
+//Arranca la batalla
+        rolando.encuentra(libro)
+        libro.hechizos([bendicion,invisibilidad,invocacion])
+        libro.poder(rolando)
+        assert.equals(9, rolando.batalla())
+        assert.equals(11, rolando.batalla())
+    }
+    //solo funciona si rolando tiene las cosas en la mochila 
+    //con variable global
 }

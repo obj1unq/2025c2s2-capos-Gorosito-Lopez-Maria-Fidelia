@@ -4,6 +4,10 @@ object rolando {
   var casaDeRolando = castilloDePiedra
   var valorBase = 0
 
+  // casa de rolando
+  method casa(){
+    return casaDeRolando
+  }
   //Rolando va a la batalla
   method batalla(){
     return valorBase + mochila.poderDePelea(self)
@@ -117,18 +121,51 @@ object espada {
   }
   //Get poder
   method poder(personaje){
-    if (usos == 0){
+    self.usar()
+    if (usos == 1){
       return personaje.valorBase()
     }else{
       return personaje.valorBase() * 0.5
     }
-    self.usar()
   }
 }
 
 //////////LIBRO/////////////
 object libro {
-  
+  var usos = 0
+  var hechizos = []
+  method poder(personaje){
+    if (hechizos.isEmpty()){
+      return 0
+    } else{
+      return 4
+    }
+  }
+
+  method hechizos(_hechizo){
+    hechizos = _hechizo
+  }
+
+}
+
+
+object bendicion {
+  const poderDeBendicion = 4
+  method poder(personaje){
+    return poderDeBendicion
+  }
+}
+
+object invisibilidad {
+  method poder(personaje) {
+    return personaje.valorBase()
+  }
+}
+
+object invocacion {
+  method poder(personaje){
+    return personaje.casa().artefactos().max({artefacto => artefacto.poder()})
+  }
 }
 
 //////////COLLAR//////////
